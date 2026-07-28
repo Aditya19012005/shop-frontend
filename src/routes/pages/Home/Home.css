@@ -1,0 +1,54 @@
+/* Yeh file home page ke hero section aur product grid ke liye styles provide karti hai. */
+.home-page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+
+.hero {
+  max-width: 640px;
+  margin-bottom: 56px;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0 0 12px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1.1;
+  margin: 0 0 18px;
+}
+
+.hero-sub {
+  color: var(--cream-dim);
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.error-banner {
+  border: 1px solid #8c2f1b;
+  background: rgba(140, 47, 27, 0.15);
+  color: var(--cream);
+  padding: 14px 18px;
+  border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 32px;
+  }
+}

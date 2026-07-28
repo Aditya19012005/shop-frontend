@@ -1,0 +1,141 @@
+/* Yeh file shopping cart page ke liye styles provide karti hai, jisme line items aur summary actions shamil hain. */
+.cart-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.cart-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  margin: 0 0 32px;
+}
+
+.cart-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart-line {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-line-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 17px;
+}
+
+.cart-line-artist {
+  margin: 2px 0 0;
+  color: var(--cream-dim);
+  font-size: 13px;
+}
+
+.cart-line-qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+}
+
+.cart-line-qty button {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--cream);
+}
+
+.cart-line-qty button:hover {
+  border-color: var(--amber);
+}
+
+.cart-line-price {
+  font-family: var(--font-mono);
+  min-width: 70px;
+  text-align: right;
+}
+
+.cart-line-remove {
+  background: none;
+  border: none;
+  color: var(--cream-dim);
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.cart-line-remove:hover {
+  color: var(--amber);
+}
+
+.cart-summary {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 24px;
+  margin-top: 12px;
+  font-size: 18px;
+}
+
+.cart-total {
+  font-family: var(--font-mono);
+}
+
+.cart-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.cart-clear-btn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--cream-dim);
+  border-radius: 999px;
+  padding: 12px 20px;
+}
+
+.cart-clear-btn:hover {
+  border-color: var(--cream-dim);
+  color: var(--cream);
+}
+
+.cart-checkout-btn {
+  background: var(--amber);
+  color: #1b1a17;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  font-weight: 600;
+}
+
+.cart-checkout-btn:hover {
+  background: #f0a52a;
+}
+
+.cart-empty {
+  text-align: center;
+  padding-top: 100px;
+}
+
+.cart-empty h1 {
+  font-family: var(--font-display);
+  font-size: 30px;
+}
+
+.cart-empty p {
+  color: var(--cream-dim);
+  margin-bottom: 24px;
+}
+
+.back-link {
+  color: var(--amber);
+}

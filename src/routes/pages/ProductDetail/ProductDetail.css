@@ -1,0 +1,105 @@
+/* Yeh file product detail view, artwork panel aur purchase actions ke liye styles provide karti hai. */
+.detail-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--cream-dim);
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.back-link:hover {
+  color: var(--amber);
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 56px;
+}
+
+.detail-art {
+  background: linear-gradient(180deg, #26221a, #1f1c16);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.detail-genre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0 0 10px;
+}
+
+.detail-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  margin: 0 0 6px;
+  line-height: 1.15;
+}
+
+.detail-artist {
+  color: var(--cream-dim);
+  font-size: 18px;
+  margin: 0 0 20px;
+}
+
+.detail-description {
+  line-height: 1.7;
+  color: var(--cream);
+  max-width: 480px;
+}
+
+.detail-buy-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.detail-price {
+  font-family: var(--font-mono);
+  font-size: 22px;
+}
+
+.detail-add-btn {
+  background: var(--amber);
+  color: #1b1a17;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.detail-add-btn:hover:not(:disabled) {
+  background: #f0a52a;
+}
+
+.detail-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.detail-stock {
+  margin-top: 14px;
+  color: var(--cream-dim);
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .detail-art {
+    max-width: 260px;
+  }
+}

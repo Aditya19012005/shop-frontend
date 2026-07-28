@@ -1,0 +1,41 @@
+/* Yeh file reusable vinyl record artwork component ke liye visual styles provide karti hai. */
+.vinyl {
+  --label: #d98e04;
+  --ring: #4a160d;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      #0e0d0b 0px,
+      #0e0d0b 2px,
+      #1a1815 3px,
+      #1a1815 4px
+    );
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--label), var(--ring) 75%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.vinyl::after {
+  content: "";
+  position: absolute;
+  inset: 47.5%;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.vinyl-card:hover .vinyl,
+.vinyl-card:focus-within .vinyl {
+  transform: rotate(50deg);
+}

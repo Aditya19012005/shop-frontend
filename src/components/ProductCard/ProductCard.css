@@ -1,0 +1,86 @@
+/* Yeh file product catalogue cards aur unke call-to-action controls ke liye styles provide karti hai. */
+.product-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.product-card:hover {
+  border-color: var(--amber-deep);
+}
+
+.product-card-art {
+  display: block;
+  padding: 28px;
+  background: linear-gradient(180deg, #26221a, #1f1c16);
+}
+
+.product-card-body {
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-genre {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0;
+}
+
+.product-title {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.product-title a:hover {
+  color: var(--amber);
+}
+
+.product-artist {
+  margin: 0;
+  color: var(--cream-dim);
+  font-size: 14px;
+}
+
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.product-price {
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+
+.add-to-cart-btn {
+  background: transparent;
+  border: 1px solid var(--amber-deep);
+  color: var(--cream);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, color 0.2s;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background: var(--amber);
+  color: #1b1a17;
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
