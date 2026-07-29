@@ -1,8 +1,8 @@
 // Yeh reusable card component hai jo catalogue mein product display karta hai.
 import { Link } from "react-router-dom";
 import type { Product } from "../../database/products.types";
-import { useAppDispatch } from "../../store";
-import { addToCart } from "../../store/cart/cart.slice";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { addToCart,removeFromCart,setQuantity } from "../../store/cart/cart.slice";
 import { Vinyl } from "../Vinyl/Vinyl";
 import "./ProductCard.css";
 
@@ -11,6 +11,9 @@ import "./ProductCard.css";
  */
 export function ProductCard({ product }: { product: Product }) {
   const dispatch = useAppDispatch();
+  const cartLine = useAppSelector((state)=> 
+  state.cart.lines.find((line)=> line.product.id === product.id)
+);
 
   return (
     <article className="product-card vinyl-card">
@@ -25,13 +28,52 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="product-artist">{product.artist}</p>
         <div className="product-card-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
-          <button
-            className="add-to-cart-btn"
-            onClick={() => dispatch(addToCart(product))}
-            disabled={product.stock === 0}
-          >
-            {product.stock === 0 ? "Sold out" : "Add to cart"}
-          </button>
+          {product.stock === 0 ? (
+  <button className="add-to-cart-btn" disabled>
+    Sold out
+  </button>
+) : cartLine ? (
+  <div className="quantity-stepper">
+    <button
+      onClick={() => {
+        if (cartLine.quantity === 1) {
+          dispatch(removeFromCart(product.id));
+        } else {
+          dispatch(
+            setQuantity({
+              productId: product.id,
+              quantity: cartLine.quantity - 1,
+            })
+          );
+        }
+      }}
+    >
+      −
+    </button>
+
+    <span>{cartLine.quantity}</span>
+
+    <button
+      onClick={() =>
+        dispatch(
+          setQuantity({
+            productId: product.id,
+            quantity: cartLine.quantity + 1,
+          })
+        )
+      }
+    >
+      +
+    </button>
+  </div>
+) : (
+  <button
+    className="add-to-cart-btn"
+    onClick={() => dispatch(addToCart(product))}
+  >
+    Add to cart
+  </button>
+)}
         </div>
       </div>
     </article>

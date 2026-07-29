@@ -37,5 +37,5 @@
 
 .vinyl-card:hover .vinyl,
 .vinyl-card:focus-within .vinyl {
-  transform: rotate(50deg);
+  transform: rotate(360deg);
 }
