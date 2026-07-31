@@ -1,30 +1,49 @@
 // Yeh data-access layer hai jo application ke liye product retrieval ko abstract karti hai.
-import { mockProducts } from "./mockProducts";
-import type { Product } from "./products.types";
-
-/**
- * Yeh backend response ko short delay ke saath simulate karta hai
- * aur app ke baaki parts ko raw data access se alag rakhta hai.
- */
-const NETWORK_DELAY_MS = 400;
-
-/**
- * Waits briefly before resolving a value to mimic network latency.
- */
-function delay<T>(value: T): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(value), NETWORK_DELAY_MS));
-}
-
+import { RpcApi } from "./rpc.api";
+import type { Product, ProductListResponse } from "./products.types";
 /**
  * Yeh local data source se full product list return karta hai.
  */
-export async function ListProductsApi(): Promise<Product[]> {
-  return delay(mockProducts);
+export async function ListProductsApi(
+  page: number,
+  pageSize: number
+): Promise<ProductListResponse> {
+  return RpcApi<ProductListResponse>({
+    method: "product.list",
+    params: {
+      page,
+      pageSize,
+    },
+  });
 }
 
 /**
  * Yeh local data source se product id ke through single product return karta hai.
  */
-export async function GetProductByIdApi(id: string): Promise<Product | undefined> {
-  return delay(mockProducts.find((p) => p.id === id));
+export async function GetProductByIdApi(
+  id: string
+): Promise<Product | undefined> {
+  return RpcApi<Product | undefined>({
+    method: "product.byId",
+    params: {
+      id,
+    },
+  });
+}
+
+
+export async function SearchProductsApi(
+  keyword: string,
+  page: number,
+  pageSize: number
+): Promise<ProductListResponse> {
+  return RpcApi<ProductListResponse>({
+    method: "product.search",
+    params: {
+      keyword,
+      page,
+      pageSize,
+      sort: "title",
+    },
+  });
 }

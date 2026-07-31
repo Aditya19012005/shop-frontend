@@ -15,3 +15,10 @@ export interface Product {
   ringColor: string;
   description: string;
 }
+export interface ProductListResponse {
+  products: Product[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}

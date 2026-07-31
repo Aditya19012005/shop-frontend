@@ -84,6 +84,7 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
 .quantity-stepper {
   display: flex;
   align-items: center;

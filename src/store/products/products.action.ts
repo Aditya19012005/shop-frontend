@@ -1,6 +1,6 @@
 // Yeh file thunk actions contain karti hai jo product data load karti hain aur products slice ko update karti hain.
 import type { AppDispatch } from "../index";
-import { ListProductsApi, GetProductByIdApi } from "../../database/products.api";
+import { ListProductsApi, GetProductByIdApi, SearchProductsApi } from "../../database/products.api";
 import {
   setProductsLoading,
   setProductsList,
@@ -14,16 +14,41 @@ import {
  * success ya error actions dispatch karta hai.
  * concept of thunk pehle loading then result/error
  */
-export const fetchProducts = () => async (dispatch: AppDispatch) => {
-  dispatch(setProductsLoading());
-  try {
-    const products = await ListProductsApi();
-    dispatch(setProductsList(products));
-  } catch (err) {
-    dispatch(setProductsError("Could not load the catalogue. Try again."));
-  }
-};
+export const fetchProducts =
+  (page: number = 1, pageSize: number = 10) =>
+    async (dispatch: AppDispatch) => {
+      dispatch(setProductsLoading());
 
+      try {
+        // await makes the api call
+        const response = await ListProductsApi(page, pageSize);
+        dispatch(setProductsList(response));
+      } catch (err) {
+        dispatch(setProductsError("Could not load the catalogue. Try again."));
+      }
+    };
+
+export const searchProducts =
+  (
+    keyword: string,
+    page: number = 1,
+    pageSize: number = 10
+  ) =>
+    async (dispatch: AppDispatch) => {
+      dispatch(setProductsLoading());
+
+      try {
+        const response = await SearchProductsApi(
+          keyword,
+          page,
+          pageSize
+        );
+
+        dispatch(setProductsList(response));
+      } catch (err) {
+        dispatch(setProductsError("Search failed."));
+      }
+    };
 /**
  * Yeh product id ke basis par single product load karta hai
  *  aur selected product state ko dispatch karta hai.

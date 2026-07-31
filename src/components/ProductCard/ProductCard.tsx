@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import type { Product } from "../../database/products.types";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { addToCart,removeFromCart,setQuantity } from "../../store/cart/cart.slice";
+import { addToCart, removeFromCart, setQuantity } from "../../store/cart/cart.slice";
 import { Vinyl } from "../Vinyl/Vinyl";
 import "./ProductCard.css";
 
@@ -11,9 +11,9 @@ import "./ProductCard.css";
  */
 export function ProductCard({ product }: { product: Product }) {
   const dispatch = useAppDispatch();
-  const cartLine = useAppSelector((state)=> 
-  state.cart.lines.find((line)=> line.product.id === product.id)
-);
+  const cartLine = useAppSelector((state) =>
+    state.cart.lines.find((line) => line.product.id === product.id)
+  );
 
   return (
     <article className="product-card vinyl-card">
@@ -29,51 +29,43 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="product-card-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
           {product.stock === 0 ? (
-  <button className="add-to-cart-btn" disabled>
-    Sold out
-  </button>
-) : cartLine ? (
-  <div className="quantity-stepper">
-    <button
-      onClick={() => {
-        if (cartLine.quantity === 1) {
-          dispatch(removeFromCart(product.id));
-        } else {
-          dispatch(
-            setQuantity({
-              productId: product.id,
-              quantity: cartLine.quantity - 1,
-            })
-          );
-        }
-      }}
-    >
-      −
-    </button>
+            <button className="add-to-cart-btn" disabled>
+              Sold out
+            </button>
+          ) : cartLine ? (
+            <div className="quantity-stepper">
+              <button
+                onClick={() => {
+                  if (cartLine.quantity === 1) {
+                    dispatch(removeFromCart(product.id));
+                  } else {
+                    dispatch(
+                      setQuantity({
+                        productId: product.id,
+                        quantity: cartLine.quantity - 1,
+                      })
+                    );
+                  }
+                }}
+              >
+                −
+              </button>
 
-    <span>{cartLine.quantity}</span>
-
-    <button
-      onClick={() =>
-        dispatch(
-          setQuantity({
-            productId: product.id,
-            quantity: cartLine.quantity + 1,
-          })
-        )
-      }
-    >
-      +
-    </button>
-  </div>
-) : (
-  <button
-    className="add-to-cart-btn"
-    onClick={() => dispatch(addToCart(product))}
-  >
-    Add to cart
-  </button>
-)}
+              <span>{cartLine.quantity}</span>
+              <button
+                onClick={() => dispatch(addToCart(product))}
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <button
+              className="add-to-cart-btn"
+              onClick={() => dispatch(addToCart(product))}
+            >
+              Add to cart
+            </button>
+          )}
         </div>
       </div>
     </article>

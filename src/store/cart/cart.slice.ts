@@ -17,11 +17,27 @@ interface CartState {
   lines: CartLine[];
 }
 
+const loadCart = (): CartLine[] => {
+  const data = localStorage.getItem("cart");
+
+  if (!data) return [];
+
+  try {
+    return JSON.parse(data);
+  } catch {
+    return [];
+  }
+};
+
+const saveCart = (lines: CartLine[]) => {
+  localStorage.setItem("cart", JSON.stringify(lines));
+};
+
 /**
  * Yeh cart ka initial state hai jab tak products add na ho jayein.
  */
 const initialState: CartState = {
-  lines: [],
+  lines: loadCart(),
 };
 
 const cartSlice = createSlice({
@@ -31,27 +47,52 @@ const cartSlice = createSlice({
     /** Yeh product ko cart mein add karta hai ya phir existing 
      * quantity ko increment karta hai. */
     addToCart: (state, action: PayloadAction<Product>) => {
-      const existing = state.lines.find((l) => l.product.id === action.payload.id);
+      const existing = state.lines.find(
+        (l) => l.product.id === action.payload.id
+      );
+
       if (existing) {
         existing.quantity += 1;
       } else {
-        state.lines.push({ product: action.payload, quantity: 1 });
+        state.lines.push({
+          product: action.payload,
+          quantity: 1,
+        });
       }
+
+      saveCart(state.lines);
     },
     /** Yeh product line ko cart se uski id ke basis par remove karta hai. */
     removeFromCart: (state, action: PayloadAction<string>) => {
-      state.lines = state.lines.filter((l) => l.product.id !== action.payload);
+      state.lines = state.lines.filter(
+        (l) => l.product.id !== action.payload
+      );
+
+      saveCart(state.lines);
     },
     /** Yeh existing cart line ki quantity update karta hai aur minimum 1 rakhta hai. */
-    setQuantity: (state, action: PayloadAction<{ productId: string; quantity: number }>) => {
-      const line = state.lines.find((l) => l.product.id === action.payload.productId);
+    setQuantity: (
+      state,
+      action: PayloadAction<{
+        productId: string;
+        quantity: number;
+      }>
+    ) => {
+      const line = state.lines.find(
+        (l) => l.product.id === action.payload.productId
+      );
+
       if (line) {
         line.quantity = Math.max(1, action.payload.quantity);
       }
+
+      saveCart(state.lines);
     },
     /** Yeh saare cart items clear karta hai. */
     clearCart: (state) => {
       state.lines = [];
+
+      saveCart(state.lines);
     },
   },
 });
