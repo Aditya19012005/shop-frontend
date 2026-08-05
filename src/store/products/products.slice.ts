@@ -17,6 +17,8 @@ interface ProductsState {
 
   selectedProduct: Product | null;
   selectedProductLoading: boolean;
+
+  cachedProducts: Record<string, Product>;
 }
 
 /**
@@ -24,6 +26,7 @@ interface ProductsState {
  */
 const initialState: ProductsState = {
   list: [],
+  cachedProducts: {},
   page: 1,
   pageSize: 10,
   total: 0,
@@ -74,6 +77,9 @@ const productsSlice = createSlice({
       state.selectedProduct = action.payload;
       state.selectedProductLoading = false;
     },
+    cacheProduct: (state, action: PayloadAction<Product>) => {
+      state.cachedProducts[action.payload.id] = action.payload;
+    },
   },
 });
 
@@ -83,6 +89,7 @@ export const {
   setProductsError,
   setSelectedProductLoading,
   setSelectedProduct,
+  cacheProduct,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

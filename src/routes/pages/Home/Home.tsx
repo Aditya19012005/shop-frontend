@@ -34,15 +34,39 @@ export function Home() {
   } = useAppSelector((state) => state.products);
   const [search, setSearch] = useState(loadSearch());
   const [pageSize, setPageSize] = useState(10);
-  useEffect(() => {
-    const savedSearch = loadSearch();
 
-    if (savedSearch.trim() === "") {
+  /* for debouncing */
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  const loadPage = (newPage: number) => {
+    if (debouncedSearch.trim() === "") {
+      dispatch(fetchProducts(newPage, pageSize));
+    } else {
+      dispatch(searchProducts(debouncedSearch, newPage, pageSize));
+    }
+  };
+
+
+  useEffect(() => {
+    saveSearch(debouncedSearch);
+
+    if (debouncedSearch.trim() === "") {
       dispatch(fetchProducts(page, pageSize));
     } else {
-      dispatch(searchProducts(savedSearch, page, pageSize));
+      dispatch(searchProducts(debouncedSearch, page, pageSize));
     }
-  }, [dispatch, page, pageSize]);
+  }, [dispatch, page, pageSize, debouncedSearch]);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+
   return (
     <div className="home-page">
       <section className="hero">
@@ -54,21 +78,6 @@ export function Home() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-
-          <button
-            onClick={() => {
-              // Save the current search keyword
-              saveSearch(search.trim());
-
-              if (search.trim() === "") {
-                dispatch(fetchProducts(1, pageSize));
-              } else {
-                dispatch(searchProducts(search, 1, pageSize));
-              }
-            }}
-          >
-            🔍
-          </button>
         </div>
       </section>
 
@@ -108,8 +117,7 @@ export function Home() {
           <div className="pagination">
             <button
               disabled={page === 1}
-              onClick={() => dispatch(fetchProducts(page - 1, pageSize))}
-            >
+              onClick={() => loadPage(page - 1)}            >
               Previous
             </button>
 
@@ -117,16 +125,14 @@ export function Home() {
               <button
                 key={index + 1}
                 className={page === index + 1 ? "active-page" : ""}
-                onClick={() => dispatch(fetchProducts(index + 1, pageSize))}
-              >
+                onClick={() => loadPage(index + 1)}              >
                 {index + 1}
               </button>
             ))}
 
             <button
               disabled={page === totalPages}
-              onClick={() => dispatch(fetchProducts(page + 1, pageSize))}
-            >
+              onClick={() => loadPage(page + 1)}            >
               Next
             </button>
           </div>

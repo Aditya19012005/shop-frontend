@@ -1,5 +1,5 @@
 // Yeh file thunk actions contain karti hai jo product data load karti hain aur products slice ko update karti hain.
-import type { AppDispatch } from "../index";
+import type { AppDispatch, RootState } from "../index";
 import { ListProductsApi, GetProductByIdApi, SearchProductsApi } from "../../database/products.api";
 import {
   setProductsLoading,
@@ -7,6 +7,7 @@ import {
   setProductsError,
   setSelectedProductLoading,
   setSelectedProduct,
+  cacheProduct
 } from "./products.slice";
 
 /**
@@ -53,12 +54,29 @@ export const searchProducts =
  * Yeh product id ke basis par single product load karta hai
  *  aur selected product state ko dispatch karta hai.
  */
-export const fetchProductById = (id: string) => async (dispatch: AppDispatch) => {
-  dispatch(setSelectedProductLoading());
-  try {
-    const product = await GetProductByIdApi(id);
-    dispatch(setSelectedProduct(product ?? null));
-  } catch (err) {
-    dispatch(setSelectedProduct(null));
-  }
-};
+export const fetchProductById =
+  (id: string) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+      dispatch(setSelectedProductLoading());
+
+      const state = getState();
+      const cachedProduct = state.products.cachedProducts[id];
+
+      if (cachedProduct) {
+        dispatch(setSelectedProduct(cachedProduct));
+        return;
+      }
+
+
+      try {
+        const product = await GetProductByIdApi(id);
+
+        if (product) {
+          dispatch(cacheProduct(product));
+        }
+
+        dispatch(setSelectedProduct(product ?? null));
+      } catch (err) {
+        dispatch(setSelectedProduct(null));
+      }
+    };
