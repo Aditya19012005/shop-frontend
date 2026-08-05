@@ -1,15 +1,17 @@
-// Yeh loading indicator hai jo data fetch ya process hone ke dauran dikhai deta hai.
-import "./Loader.css";
+interface LoaderProps {
+  label?: string;
+}
 
-/**
- * Yeh lightweight loading spinner dikhata hai jisme optional 
- * descriptive label bhi ho sakta hai.
- */
-export function Loader({ label = "Loading" }: { label?: string }) {
+export function Loader({ label = "Loading..." }: LoaderProps) {
   return (
-    <div className="loader-wrap" role="status">
-      <div className="loader-spinner" />
-      <span className="loader-label">{label}</span>
+    <div className="d-flex flex-column align-items-center justify-content-center py-5">
+      <div
+        className="spinner-border text-warning"
+        role="status"
+        aria-hidden="true"
+      ></div>
+
+      <span className="mt-3">{label}</span>
     </div>
   );
 }

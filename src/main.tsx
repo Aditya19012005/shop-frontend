@@ -8,6 +8,7 @@ import App from "./App";
 import { store } from "./store";
 
 import "./index.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * Creates the root container and 
