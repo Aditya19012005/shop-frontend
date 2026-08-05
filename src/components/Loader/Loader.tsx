@@ -10,6 +10,7 @@ export function Loader({ label = "Loading..." }: LoaderProps) {
         role="status"
         aria-hidden="true"
       ></div>
+      
 
       <span className="mt-3">{label}</span>
     </div>
