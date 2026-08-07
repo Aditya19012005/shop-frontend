@@ -1,7 +1,7 @@
 // Yeh landing page hai jo storefront catalogue display karti hai.
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { fetchProducts, searchProducts } from "../../../store/products/products.action";
+import { fetchProducts, searchProducts, fetchSuggestions } from "../../../store/products/products.action";
 import { ProductCard } from "../../../components/ProductCard/ProductCard";
 import { Loader } from "../../../components/Loader/Loader";
 import "./Home.css";
@@ -30,6 +30,7 @@ export function Home() {
     page,
     totalPages,
     isLoading,
+    suggestions,
     error,
   } = useAppSelector((state) => state.products);
   const [search, setSearch] = useState(loadSearch());
@@ -76,8 +77,32 @@ export function Home() {
             type="text"
             placeholder="Search records..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              setSearch(value);
+
+              dispatch(fetchSuggestions(value));
+            }}
           />
+
+          {suggestions.length > 0 && (
+            <div className="suggestions-dropdown">
+              {suggestions.map((suggestion) => (
+                <div
+                  key={suggestion}
+                  className="suggestion-item"
+                  onClick={() => {
+                    setSearch(suggestion);
+                    saveSearch(suggestion);
+                    dispatch(searchProducts(suggestion, 1, pageSize));
+                  }}
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

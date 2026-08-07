@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { removeFromCart, setQuantity, clearCart } from "../../../store/cart/cart.slice";
 import "./Cart.css";
-
+import { Vinyl } from "../../../components/Vinyl/Vinyl";
 /**
  * Yeh cart contents render karta hai, quantity changes support karta hai aur checkout state handle karta hai.
  */
@@ -46,16 +46,31 @@ export function Cart() {
         {lines.map((line) => (
           <div className="cart-line" key={line.product.id}>
             <div className="cart-line-info">
-              <p className="cart-line-title">{line.product.title}</p>
-              <p className="cart-line-artist">{line.product.artist}</p>
+              <Vinyl
+                labelColor={line.product.labelColor}
+                ringColor={line.product.ringColor}
+                size={60}
+              />
+
+              <div className="cart-line-details">
+                <p className="cart-line-title">{line.product.title}</p>
+                <p className="cart-line-artist">{line.product.artist}</p>
+              </div>
             </div>
             <div className="cart-line-qty">
               <button
-                onClick={() =>
-                  dispatch(
-                    setQuantity({ productId: line.product.id, quantity: line.quantity - 1 })
-                  )
-                }
+                onClick={() => {
+                  if (line.quantity === 1) {
+                    dispatch(removeFromCart(line.product.id));
+                  } else {
+                    dispatch(
+                      setQuantity({
+                        productId: line.product.id,
+                        quantity: line.quantity - 1,
+                      })
+                    );
+                  }
+                }}
                 aria-label="Decrease quantity"
               >
                 &minus;
@@ -79,7 +94,7 @@ export function Cart() {
               className="cart-line-remove"
               onClick={() => dispatch(removeFromCart(line.product.id))}
             >
-              Remove
+              🗑️
             </button>
           </div>
         ))}

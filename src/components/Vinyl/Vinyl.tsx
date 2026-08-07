@@ -7,16 +7,22 @@ import "./Vinyl.css";
 interface VinylProps {
   labelColor: string;
   ringColor: string;
+  size?: number;
 }
 
 /**
  * Yeh decorative vinyl disc render karta hai jo product views mein use hota hai.
  */
-export function Vinyl({ labelColor, ringColor }: VinylProps) {
+export function Vinyl({ labelColor, ringColor, size = 220, }: VinylProps) {
   return (
     <div
       className="vinyl"
-      style={{ "--label": labelColor, "--ring": ringColor } as React.CSSProperties}
+      style={{
+        "--label": labelColor,
+        "--ring": ringColor,
+        width: `${size}px`,
+        height: `${size}px`,
+      } as React.CSSProperties}
       aria-hidden="true"
     />
   );

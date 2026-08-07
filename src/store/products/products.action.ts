@@ -1,12 +1,13 @@
 // Yeh file thunk actions contain karti hai jo product data load karti hain aur products slice ko update karti hain.
 import type { AppDispatch, RootState } from "../index";
-import { ListProductsApi, GetProductByIdApi, SearchProductsApi } from "../../database/products.api";
+import { ListProductsApi, GetProductByIdApi, SearchProductsApi, SuggestionsApi, } from "../../database/products.api";
 import {
   setProductsLoading,
   setProductsList,
   setProductsError,
   setSelectedProductLoading,
   setSelectedProduct,
+  setSuggestions,
   cacheProduct
 } from "./products.slice";
 
@@ -50,6 +51,24 @@ export const searchProducts =
         dispatch(setProductsError("Search failed."));
       }
     };
+
+
+export const fetchSuggestions =
+  (keyword: string) => async (dispatch: AppDispatch) => {
+
+    if (keyword.trim().length < 2) {
+      dispatch(setSuggestions([]));
+      return;
+    }
+
+    try {
+      const suggestions = await SuggestionsApi(keyword);
+
+      dispatch(setSuggestions(suggestions));
+    } catch (err) {
+      dispatch(setSuggestions([]));
+    }
+  };
 /**
  * Yeh product id ke basis par single product load karta hai
  *  aur selected product state ko dispatch karta hai.

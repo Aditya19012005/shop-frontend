@@ -18,6 +18,8 @@ interface ProductsState {
   selectedProduct: Product | null;
   selectedProductLoading: boolean;
 
+  suggestions: string[];
+
   cachedProducts: Record<string, Product>;
 }
 
@@ -31,6 +33,7 @@ const initialState: ProductsState = {
   pageSize: 10,
   total: 0,
   totalPages: 0,
+  suggestions: [],
 
   isLoading: false,
   error: null,
@@ -51,6 +54,10 @@ const productsSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
+    setSuggestions: (state, action: PayloadAction<string[]>) => {
+      state.suggestions = action.payload;
+    },
+
     /** Yeh fetched product list ko store karta hai aur loading state clear karta hai. */
     setProductsList: (
       state,
@@ -89,6 +96,7 @@ export const {
   setProductsError,
   setSelectedProductLoading,
   setSelectedProduct,
+  setSuggestions,
   cacheProduct,
 } = productsSlice.actions;
 

@@ -47,3 +47,15 @@ export async function SearchProductsApi(
     },
   });
 }
+
+
+export async function SuggestionsApi(
+  keyword: string
+): Promise<string[]> {
+  return RpcApi<string[]>({
+    method: "product.suggestions",
+    params: {
+      keyword,
+    },
+  });
+}

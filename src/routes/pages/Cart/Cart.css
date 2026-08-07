@@ -26,6 +26,17 @@
   border-bottom: 1px solid var(--line);
 }
 
+.cart-line-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cart-line-details {
+  display: flex;
+  flex-direction: column;
+}
+
 .cart-line-title {
   margin: 0;
   font-family: var(--font-display);
