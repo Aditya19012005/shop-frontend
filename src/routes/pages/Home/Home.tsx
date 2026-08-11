@@ -6,7 +6,7 @@ import { ProductCard } from "../../../components/ProductCard/ProductCard";
 import { Loader } from "../../../components/Loader/Loader";
 import "./Home.css";
 import { useState } from "react";
-
+import { setSuggestions } from "../../../store/products/products.slice";
 /**
  * for the search bar storage
  */
@@ -37,37 +37,21 @@ export function Home() {
   const [pageSize, setPageSize] = useState(10);
 
   /* for debouncing */
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
+  const [searched, setSearched] = useState(false);
   const loadPage = (newPage: number) => {
-    if (debouncedSearch.trim() === "") {
+    if (!searched) {
       dispatch(fetchProducts(newPage, pageSize));
     } else {
-      dispatch(searchProducts(debouncedSearch, newPage, pageSize));
+      dispatch(searchProducts(search, newPage, pageSize));
     }
   };
 
-
   useEffect(() => {
-    saveSearch(debouncedSearch);
-
-    if (debouncedSearch.trim() === "") {
+    if (!searched) {
       dispatch(fetchProducts(page, pageSize));
-    } else {
-      dispatch(searchProducts(debouncedSearch, page, pageSize));
     }
-  }, [dispatch, page, pageSize, debouncedSearch]);
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [search]);
-
-
+  }, [dispatch, page, pageSize, searched]);
   return (
     <div className="home-page">
       <section className="hero">
@@ -76,13 +60,21 @@ export function Home() {
           <input
             type="text"
             placeholder="Search records..."
+
+            /**the search state updates from here
+             */
             value={search}
             onChange={(e) => {
               const value = e.target.value;
 
               setSearch(value);
 
-              dispatch(fetchSuggestions(value));
+              if (value.trim() === "") {
+                setSearched(false);
+                dispatch(fetchProducts(1, pageSize));
+              } else {
+                dispatch(fetchSuggestions(value));
+              }
             }}
           />
 
@@ -95,7 +87,10 @@ export function Home() {
                   onClick={() => {
                     setSearch(suggestion);
                     saveSearch(suggestion);
+                    setSearched(true);
+
                     dispatch(searchProducts(suggestion, 1, pageSize));
+                    dispatch(setSuggestions([]));
                   }}
                 >
                   {suggestion}
@@ -125,7 +120,7 @@ export function Home() {
                 const size = Number(e.target.value);
                 setPageSize(size);
 
-                if (search.trim() === "") {
+                if (!searched) {
                   dispatch(fetchProducts(1, size));
                 } else {
                   dispatch(searchProducts(search, 1, size));

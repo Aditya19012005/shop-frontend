@@ -47,8 +47,6 @@ export async function SearchProductsApi(
     },
   });
 }
-
-
 export async function SuggestionsApi(
   keyword: string
 ): Promise<string[]> {
